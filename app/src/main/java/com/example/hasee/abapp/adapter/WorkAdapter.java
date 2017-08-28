@@ -34,9 +34,10 @@ public class WorkAdapter extends HsBaseAdapter<WorkAllBean> {
         super(list, context);
     }
 
+
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-//        String[] str = new String[]{"流水线1", "流水线2", "流水线3", "流水线4", "流水线5"};
         if (view == null) view = mInflater.inflate(R.layout.item_work_list, viewGroup, false);
         LinearLayout llProgress = ViewHolder.get(view, R.id.ll_progress);
         LinearLayout llWorkerInfo = ViewHolder.get(view, R.id.ll_workerInfo);
@@ -72,27 +73,56 @@ public class WorkAdapter extends HsBaseAdapter<WorkAllBean> {
         for(int j=0;j<partList.size();j++){
             List<ProcessWorkerBean> partSubList=partList.get(j);
             TextView tvTitle=new TextView(mContext);
+            tvTitle.setBackgroundColor(Color.YELLOW);
+            tvTitle.setTextSize(22);
+            tvTitle.setPadding(0,10,0,10);
             tvTitle.setText(partSubList.get(0).SPARTNAME);
             llProgress.addView(tvTitle);
-            tvTitle.setTextColor(Color.RED);
+            tvTitle.setTextColor(Color.BLACK);
+            LinearLayout layout=new LinearLayout(mContext);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            List<LinearLayout> layoutList=new ArrayList<>();
             for(int k=0;k<partSubList.size();k++){
+                LinearLayout subLayout;
+                if(i%2==0){
+                    subLayout=new LinearLayout(mContext);
+                }else {
+                    subLayout=layoutList.get(i/2);
+                }
+                subLayout.setOrientation(LinearLayout.HORIZONTAL);
                 TextView tvWorkName=new TextView(mContext);
-                tvWorkName.setText(partSubList.get(k).SWORKTEAMNAME);
-                llProgress.addView(tvWorkName);
+                tvWorkName.setTextSize(20);
+                tvWorkName.setPadding(0,10,0,10);
+                tvWorkName.setTextColor(Color.BLACK);
+                tvWorkName.setText(partSubList.get(k).SEMPLOYEENAMECN);
+                tvWorkName.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,1));
+                subLayout.addView(tvWorkName);
+                if(i%2==0){
+                   layoutList.add(subLayout);
+                }else {
+                    layoutList.set(i/2,subLayout);
+                }
             }
+            for(int k=0;k<layoutList.size();k++){
+                layout.addView(layoutList.get(k));
+            }
+            llProgress.addView(layout);
         }
+
         for(int j=0;j<classGroupBeanList.size();j++){
             ClassGroupBean classGroupBean=classGroupBeanList.get(j);
             View v=mInflater.inflate(R.layout.grouplist,null);
             ImageView ivHead=v.findViewById(R.id.ivHead);
+            TextView tvGroup = v.findViewById(R.id.tvGroup);
             TextView gv1=v.findViewById(R.id.gv1);
             TextView gv2=v.findViewById(R.id.gv2);
             TextView gv3=v.findViewById(R.id.gv3);
 //            Glide.with(mContext)
 //                    .load
-            gv1.setText(classGroupBean.SEMPLOYEENO);
-            gv2.setText(classGroupBean.SEMPLOYEENAMECN);
-            gv3.setText(classGroupBean.SWORKTYPE);
+            gv1.setText("工号:"+classGroupBean.SEMPLOYEENO);
+            gv2.setText("姓名:"+classGroupBean.SEMPLOYEENAMECN);
+            gv3.setText("工种:"+classGroupBean.SWORKTYPE);
+            tvGroup.setText(classGroupBean.SWORKTEAMNAME);
             llWorkerInfo.addView(v);
         }
 

@@ -281,13 +281,18 @@ public class MainActivity extends NotWebBaseActivity {
                         List<WsEntity> processWorkerBeanEntityList= (List<WsEntity>) map.get("ProcessWorkerBean");
                         List<WsEntity> classGroupBeanEntityList= (List<WsEntity>) map.get("ClassGroupBean");
                         //表头信息
+
                         TopDataBean topDataBean= (TopDataBean) topDataBeanEntityList.get(0);
+
                         //TODO
                         showTopData(topDataBean);
                         //柱状图信息
                         showBarData(realTimeProcessBarBeanEntityList);
                         //工序组成员通过班组名称分组
                         Map<String,WorkAllBean> workAllBeanMap=new HashMap<>();
+                        List<List<ProcessWorkerBean>> processWorkerBeanList=new ArrayList<>();
+                        Map<String,List<ProcessWorkerBean>> processWorkerBeanMap=new HashMap<>();
+
                         for(WsEntity entity:processWorkerBeanEntityList){
                             ProcessWorkerBean bean= (ProcessWorkerBean) entity;
                             WorkAllBean workAllBean=workAllBeanMap.get(bean.SWORKTEAMNAME);
@@ -429,7 +434,14 @@ public class MainActivity extends NotWebBaseActivity {
      * 显示头部信息
      */
     private void showTopData(TopDataBean topDataBean){
-
+        mActivityMainBinding.tvOrderNum.setText(topDataBean.SORDERNO);
+        mActivityMainBinding.tvStyleNum.setText(topDataBean.SSTYLENO);
+        mActivityMainBinding.tvBatchNum.setText(topDataBean.SLOTNO);
+        mActivityMainBinding.tvDeliveryDate.setText(topDataBean.DDELIVERYDATE);
+        mActivityMainBinding.tvOrderQTY.setText(topDataBean.IORDERQTY);
+        mActivityMainBinding.tvCutQTY.setText(topDataBean.ICUTQTY);
+        mActivityMainBinding.tvUpQTY.setText(topDataBean.IUPQTY);
+        mActivityMainBinding.tvDownQTY.setText(topDataBean.IDOWNQTY);
     }
 
 //    /**
